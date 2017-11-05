@@ -95,6 +95,10 @@ class WaTor:
                 if new_shark[a, b] == 0:  # if there is fish eat it
                     new_shark[a, b] = new_fish[x, y] - 1
                     new_energies[a, b] = self.energies[x, y]
+                    moved = True
+            if not moved:
+                new_shark[x, y] = new_fish[x, y] + 1
+                new_energies[x, y] = self.energies[x, y]
 
         new_shark[new_energies == 1] = 0
         new_energies[new_energies > 0] -= 1
