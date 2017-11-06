@@ -57,53 +57,63 @@ class WaTor:
         # fish are represented as negative numbers
         return numpy.sum(self.creatures < 0)
 
-    def tick(self):
-        """Simulate one chronon."""
-        new_fish = numpy.copy(self.creatures)
-        new_fish[self.creatures > 0] = 0
-
+    def generate_move(self, x, y):
         directions = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
+        for i, j in numpy.random.permutation(directions):
+            yield (x + i) % self.width, (y + j) % self.height
+
+    def move_fish(self):
+        new_creatures = numpy.copy(self.creatures)
+        new_creatures[new_creatures > 0] = 0
+
         for x, y in numpy.argwhere(self.creatures > 0):  # for each fish
             moved = False
-            for i, j in numpy.random.permutation(directions):  # random move
-                a, b = (x + i) % self.width, (y + j) % self.height
-                if new_fish[a, b] == 0:  # move if the field is empty
-                    new_fish[a, b] = self.creatures[x, y] + 1
+
+            for a, b in self.generate_move(x, y):
+                if new_creatures[a, b] == 0:  # move if the field is empty
+                    new_creatures[a, b] = self.creatures[x, y] + 1
                     moved = True
+
             if not moved:
-                new_fish[x, y] = self.creatures[x, y] + 1
+                new_creatures[x, y] = self.creatures[x, y] + 1
 
+        return new_creatures
 
-        new_shark = numpy.copy(new_fish)
-        new_shark[self.creatures < 0] = 0
+    def move_sharks(self):
+        new_creatures = numpy.copy(self.creatures)
+        new_creatures[new_creatures < 0] = 0
         new_energies = numpy.copy(self.energies)
 
-        for x, y in numpy.argwhere(new_fish < 0):  # for each shark
+        for x, y in numpy.argwhere(self.creatures < 0):  # for each shark
             moved = False
-            for i, j in numpy.random.permutation(directions):
-                a, b = (x + i) % self.width, (y + j) % self.height
-                if new_shark[a, b] > 0:  # if there is fish eat it
-                    new_shark[a, b] = new_fish[x, y] - 1
+
+            for a, b in self.generate_move(x, y):
+                if new_creatures[a, b] > 0:  # if there is fish eat it
+                    new_creatures[a, b] = self.creatures[x, y] - 1
                     new_energies[a, b] = self.energies[x, y] + self.energy_eat
                     moved = True
 
             if moved:
                 continue
 
-            for i, j in numpy.random.permutation(directions):
-                a, b = (x + i) % self.width, (y + j) % self.height
-                if new_shark[a, b] == 0:  # if there is fish eat it
-                    new_shark[a, b] = new_fish[x, y] - 1
+            for a, b in self.generate_move(x, y):
+                if new_creatures[a, b] == 0:  # if there is fish eat it
+                    new_creatures[a, b] = self.creatures[x, y] - 1
                     new_energies[a, b] = self.energies[x, y]
                     moved = True
+
             if not moved:
-                new_shark[x, y] = new_fish[x, y] + 1
+                new_creatures[x, y] = self.creatures[x, y] + 1
                 new_energies[x, y] = self.energies[x, y]
 
-        new_shark[new_energies == 1] = 0
+        new_creatures[new_energies == 1] = 0
         new_energies[new_energies > 0] -= 1
-
-        self.creatures = new_shark
         self.energies = new_energies
-        return self
 
+        return new_creatures
+
+    def tick(self):
+        """Simulate one chronon."""
+        self.creatures = self.move_fish()
+        self.creatures = self.move_sharks()
+        return self
