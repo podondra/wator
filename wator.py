@@ -2,7 +2,6 @@ import numpy
 
 
 class WaTor:
-
     def __init__(self, creatures=None,
                  shape=None, nfish=None, nsharks=None,
                  age_fish=None, age_shark=None,
@@ -75,7 +74,7 @@ class WaTor:
                         # reproduce
                         new_creatures[x, y] = 1
                         new_creatures[a, b] = 1
-                    else:
+                    else:  # move
                         new_creatures[a, b] = self.creatures[x, y] + 1
                         new_creatures[x, y] = 0
                     moved = True
@@ -87,36 +86,40 @@ class WaTor:
 
         return new_creatures
 
+    def move_shark(self, new_creatures, new_energies, fr, to, energy_gain=0):
+        x, y = fr
+        a, b = to
+        if new_creatures[x, y] - 1 < self.age_shark:
+            new_creatures[x, y] = -1
+            new_energies[x, y] = self.energies[x, y]
+            new_creatures[a, b] = -1
+        else:
+            new_creatures[a, b] = self.creatures[x, y] - 1
+            new_creatures[x, y] = 0
+            new_energies[x, y] = 0
+        new_energies[a, b] = self.energies[x, y] + energy_gain
+
     def move_sharks(self):
         new_creatures = numpy.copy(self.creatures)
         new_energies = numpy.copy(self.energies)
 
         for x, y in numpy.argwhere(self.creatures < 0):  # for each shark
             moved = False
+            # find fish
             for a, b in self.generate_move(x, y):
                 if new_creatures[a, b] > 0:  # if there is fish eat it
-                    # TODO reproduce
-                    new_creatures[a, b] = self.creatures[x, y] - 1
-                    new_creatures[x, y] = 0
-                    new_energies[a, b] = self.energies[x, y] + self.energy_eat
-                    new_energies[x, y] = 0
+                    self.move_shark(new_creatures, new_energies, (x, y), (a, b),
+                                    self.energy_eat)
                     moved = True
                     break
 
             if moved:
                 continue
 
+            # move
             for a, b in self.generate_move(x, y):
                 if new_creatures[a, b] == 0:
-                    # TODO reproduce
-                    #if new_creatures[a, b] < self.age_shark:
-                    #    # reproduce
-                    #    new_creatures[x, y], new_creatures[a, b] = -1, -1
-                    #    new_energies[a, b] = new_energies[x, y]
-                    new_creatures[a, b] = self.creatures[x, y] - 1
-                    new_creatures[x, y] = 0
-                    new_energies[a, b] = self.energies[x, y]
-                    new_energies[x, y] = 0
+                    self.move_shark(new_creatures, new_energies, (x, y), (a, b))
                     moved = True
                     break
 
