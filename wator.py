@@ -114,7 +114,7 @@ class WaTor:
             for a, b in self._generate_move(x, y):
                 if new_creatures[a, b] > 0:  # if there is fish eat it
                     self._move_shark(new_creatures, new_energies, (x, y),
-                                    (a, b), self.energy_eat)
+                                     (a, b), self.energy_eat)
                     moved = True
                     break
 
@@ -125,7 +125,7 @@ class WaTor:
             for a, b in self._generate_move(x, y):
                 if new_creatures[a, b] == 0:
                     self._move_shark(new_creatures, new_energies,
-                                    (x, y), (a, b))
+                                     (x, y), (a, b))
                     moved = True
                     break
 
