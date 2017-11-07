@@ -12,13 +12,14 @@ class WaTor:
         self.energy_initial = energy_initial if energy_initial else 5
         self.energy_eat = energy_eat if energy_eat else 3
 
+        error_msg = 'Either provide creatures or shape, nfish and nsharks'
         if creatures is not None:
             if nfish is not None or nsharks is not None or shape is not None:
-                raise(ValueError)
+                raise ValueError(error_msg)
             self.creatures = creatures
         else:
             if shape is None or nfish is None or nsharks is None:
-                raise(ValueError)
+                raise ValueError(error_msg)
             self.creatures = numpy.zeros(shape, dtype=numpy.int)
 
             wator_size = shape[0] * shape[1]
@@ -36,9 +37,12 @@ class WaTor:
             self.creatures.flat[shark_index] = shark_ages
 
         if energies is not None:
-            if energies.shape != self.creatures.shape or \
-               energy_initial is not None:
-                raise(ValueError)
+            if energies.shape != self.creatures.shape:
+                raise ValueError('Shapes of creatures and energies must be '
+                                 'the same.')
+            if energy_initial is not None:
+                raise ValueError('Do not provide energy_initial together with '
+                                 'energies.')
             self.energies = energies
         else:
             self.energies = numpy.zeros_like(self.creatures, dtype=numpy.int)
