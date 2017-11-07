@@ -73,9 +73,7 @@ class WaTor:
             if (a, b) != (x, y):  # cannot move to same field
                 yield a, b
 
-    def _move_fish(self):
-        new_creatures = numpy.copy(self.creatures)
-
+    def _move_fish(self, new_creatures):
         for x, y in numpy.argwhere(self.creatures > 0):  # for each fish
             moved = False
             for a, b in self._generate_move(x, y):
@@ -109,10 +107,7 @@ class WaTor:
             new_energies[x, y] = 0
         new_energies[a, b] = self.energies[x, y] + energy_gain
 
-    def _move_sharks(self):
-        new_creatures = numpy.copy(self.creatures)
-        new_energies = numpy.copy(self.energies)
-
+    def _move_sharks(self, new_creatures, new_energies):
         for x, y in numpy.argwhere(self.creatures < 0):  # for each shark
             moved = False
             # find fish
@@ -146,6 +141,9 @@ class WaTor:
 
     def tick(self):
         """Simulate one chronon."""
-        self.creatures = self._move_fish()
-        self.creatures, self.energies = self._move_sharks()
+        new_creatures = numpy.copy(self.creatures)
+        new_energies = numpy.copy(self.energies)
+        new_fish = self._move_fish(new_creatures)
+        self.creatures, self.energies = self._move_sharks(new_fish,
+                                                          new_energies)
         return self
