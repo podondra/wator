@@ -5,8 +5,9 @@ Usage
 -----
 
  1. Copy the tests files to your project.
- 2. In your virtual environment, install pytest: ``python -m pip install pytest``.
- 3. Run ``python -m pytest tests/``.
+ 2. In your virtual environment, install pytest-timeout: ``python -m pip install pytest-timeout``.
+ 3. Build your module (``python setup.py develop`` or ``python setup.py build_ext -i``)
+ 4. Run ``python -m pytest tests/``.
 
 
 Tolerance to bad randomness
