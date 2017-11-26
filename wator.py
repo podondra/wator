@@ -3,7 +3,7 @@ import numpy
 
 class WaTor:
     def _random_creatures(self, shape, nfish, nsharks):
-        creatures = numpy.zeros(shape, dtype=numpy.int)
+        creatures = numpy.zeros(shape, dtype=numpy.int8)
 
         wator_size = shape[0] * shape[1]
         wator_index = numpy.arange(wator_size)
@@ -36,7 +36,7 @@ class WaTor:
         if creatures is not None:   # creatures provided
             if nfish is not None or nsharks is not None or shape is not None:
                 raise ValueError(error_msg)
-            self.creatures = creatures
+            self.creatures = creatures.astype(numpy.int8, copy=False)
         else:  # create creatures
             if shape is None or nfish is None or nsharks is None:
                 raise ValueError(error_msg)
@@ -49,9 +49,9 @@ class WaTor:
             if energy_initial is not None:
                 raise ValueError('Do not provide energy_initial together with '
                                  'energies.')
-            self.energies = energies
+            self.energies = energies.astype(numpy.int16, copy=False)
         else:
-            self.energies = numpy.zeros_like(self.creatures, dtype=numpy.int)
+            self.energies = numpy.zeros_like(self.creatures, dtype=numpy.int16)
             self.energies[self.creatures < 0] = self.energy_initial
 
         self.height, self.width = self.creatures.shape
