@@ -1,3 +1,7 @@
+prof/
+wator.c
+wator.html
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
