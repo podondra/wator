@@ -1,7 +1,14 @@
 import numpy
+cimport numpy
 
 
-class WaTor:
+cdef class WaTor:
+    cdef int age_fish, age_shark
+    cdef int energy_initial, energy_eat
+    cdef int width, height
+    cdef public numpy.ndarray creatures
+    cdef public numpy.ndarray energies
+
     def _random_creatures(self, shape, nfish, nsharks):
         creatures = numpy.zeros(shape, dtype=numpy.int8)
 
@@ -20,10 +27,9 @@ class WaTor:
 
         return creatures
 
-    def __init__(self, creatures=None,
-                 shape=None, nfish=None, nsharks=None,
-                 age_fish=None, age_shark=None,
-                 energy_initial=None, energies=None, energy_eat=None):
+    def __cinit__(self, creatures=None, shape=None, nfish=None, nsharks=None,
+            age_fish=None, age_shark=None, energy_initial=None, energies=None,
+            energy_eat=None):
         """Setup WaTor simulation."""
         # member variables setup
         self.age_fish = age_fish if age_fish else 5
@@ -43,7 +49,7 @@ class WaTor:
             self.creatures = self._random_creatures(shape, nfish, nsharks)
 
         if energies is not None:
-            if energies.shape != self.creatures.shape:
+            if energies.shape[0] != self.creatures.shape[0] or energies.shape[1] != self.creatures.shape[1]:
                 raise ValueError('Shapes of creatures and energies must be '
                                  'the same.')
             if energy_initial is not None:
@@ -54,7 +60,8 @@ class WaTor:
             self.energies = numpy.zeros_like(self.creatures, dtype=numpy.int16)
             self.energies[self.creatures < 0] = self.energy_initial
 
-        self.height, self.width = self.creatures.shape
+        self.height = self.creatures.shape[0]
+        self.width = self.creatures.shape[1]
 
     def count_fish(self):
         """Return number of fish."""
