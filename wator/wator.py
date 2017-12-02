@@ -1,25 +1,8 @@
 import numpy
+from . import cwator
 
 
 class WaTor:
-    def _random_creatures(self, shape, nfish, nsharks):
-        creatures = numpy.zeros(shape, dtype=numpy.int)
-
-        wator_size = shape[0] * shape[1]
-        wator_index = numpy.arange(wator_size)
-        random_index = numpy.random.choice(wator_index, size=nfish + nsharks,
-                                           replace=False)
-
-        fish_ages = numpy.random.randint(1, self.age_fish + 1, size=nfish)
-        fish_index = random_index[:nfish]
-        creatures.flat[fish_index] = fish_ages
-
-        shark_ages = numpy.random.randint(self.age_shark, 0, size=nsharks)
-        shark_index = random_index[nfish:]
-        creatures.flat[shark_index] = shark_ages
-
-        return creatures
-
     def __init__(self, creatures=None,
                  shape=None, nfish=None, nsharks=None,
                  age_fish=None, age_shark=None,
@@ -36,11 +19,12 @@ class WaTor:
         if creatures is not None:   # creatures provided
             if nfish is not None or nsharks is not None or shape is not None:
                 raise ValueError(error_msg)
-            self.creatures = creatures
+            self.creatures = creatures.astype(numpy.int8, copy=False)
         else:  # create creatures
             if shape is None or nfish is None or nsharks is None:
                 raise ValueError(error_msg)
-            self.creatures = self._random_creatures(shape, nfish, nsharks)
+            self.creatures = cwator.random_creatures(shape, nfish, nsharks,
+                    self.age_fish, self.age_shark)
 
         if energies is not None:
             if energies.shape != self.creatures.shape:
@@ -49,10 +33,10 @@ class WaTor:
             if energy_initial is not None:
                 raise ValueError('Do not provide energy_initial together with '
                                  'energies.')
-            self.energies = energies
+            self.energies = energies.astype(numpy.int64, copy=False)
         else:
-            self.energies = numpy.zeros_like(self.creatures, dtype=numpy.int)
-            self.energies[self.creatures < 0] = self.energy_initial
+            self.energies = numpy.full(self.creatures.shape,
+                    self.energy_initial, dtype=numpy.int64)
 
         self.height, self.width = self.creatures.shape
 
@@ -104,7 +88,6 @@ class WaTor:
         else:
             new_creatures[a, b] = self.creatures[x, y] - 1
             new_creatures[x, y] = 0
-            new_energies[x, y] = 0
         new_energies[a, b] = self.energies[x, y] + energy_gain
 
     def _move_sharks(self, new_creatures, new_energies):
@@ -134,8 +117,8 @@ class WaTor:
                                           self.age_shark)
                 new_energies[x, y] = self.energies[x, y]
 
-        new_creatures[new_energies == 1] = 0
-        new_energies[new_energies > 0] -= 1
+        new_energies -= 1
+        new_creatures[(new_energies == 0) & (new_creatures < 0)] = 0
 
         return new_creatures, new_energies
 
