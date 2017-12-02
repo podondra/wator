@@ -5,8 +5,8 @@ import numpy
 
 setup(
         name='wator',
-        ext_modules=cythonize('wator.pyx', language_level=3),
+        ext_modules=cythonize('wator/cwator.pyx', language_level=3),
         include_dirs=[numpy.get_include()],
-        setup_requires=['cython', 'numpy'],
-        install_requires=['numpy'],
+        setup_requires=['Cython', 'NumPy'],
+        install_requires=['NumPy'],
         )

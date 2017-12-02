@@ -1,6 +1,6 @@
 prof/
-wator.c
-wator.html
+wator/cwator.c
+wator/cwator.html
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
