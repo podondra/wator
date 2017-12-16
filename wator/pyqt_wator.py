@@ -3,8 +3,8 @@ import numpy
 
 
 CELL_SIZE = 32
-SVG_GRASS = QtSvg.QSvgRenderer('grass.svg')
-SVG_WALL = QtSvg.QSvgRenderer('wall.svg')
+SVG_GRASS = QtSvg.QSvgRenderer('img/grass.svg')
+SVG_WALL = QtSvg.QSvgRenderer('img/wall.svg')
 VALUE_ROLE = QtCore.Qt.UserRole
 
 
@@ -66,7 +66,7 @@ class GridWidget(QtWidgets.QWidget):
 def new_dialog(window, grid):
     dialog = QtWidgets.QDialog(window)
 
-    with open('newmaze.ui') as f:
+    with open('ui/newmaze.ui') as f:
         uic.loadUi(f, dialog)
 
     result = dialog.exec()
@@ -92,7 +92,7 @@ def main():
 
     window = QtWidgets.QMainWindow()
 
-    with open('mainwindow.ui') as f:
+    with open('ui/mainwindow.ui') as f:
         uic.loadUi(f, window)
 
     array = numpy.zeros((15, 20), dtype=numpy.int8)
@@ -112,8 +112,8 @@ def main():
         palette.addItem(item)
         item.setData(VALUE_ROLE, value)
 
-    add_item('grass', 'grass.svg', 0)
-    add_item('wall', 'wall.svg', -1)
+    add_item('grass', 'img/grass.svg', 0)
+    add_item('wall', 'img/wall.svg', -1)
 
     def item_activated():
         for item in palette.selectedItems():
