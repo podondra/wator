@@ -2,6 +2,14 @@
 
 Wa-Tor population dynamics simulation.
 
+## Setup
+
+```bash
+$ python -m pip install -r requirements.txt
+$ python setup.py develop
+$ python -m wator
+```
+
 ## Qt Checklist
 
 - [ ] vytvářet novou simulaci zadaných rozměrů (prázdnou, náhodně generovanou
