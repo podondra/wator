@@ -1,3 +1,4 @@
+import numpy
 from PyQt5 import QtWidgets, uic, QtGui, QtCore, QtSvg
 from .wator import WaTor
 
@@ -91,7 +92,7 @@ def new_dialog(window, grid):
     grid.update()
 
 
-def next_tick(grid):
+def next_chronon(grid):
     grid.wator.tick()
     grid.update()
 
@@ -107,6 +108,25 @@ def new_about(window):
             'Graphics: <a href="https://opengameart.org/">'
             'OpenGameArt.org</a></p>')
     QtWidgets.QMessageBox.about(window, 'About Wa-Tor', text)
+
+
+def open_wator(window, grid):
+    filename = QtWidgets.QFileDialog.getOpenFileName(window, 'Open File')
+    try:
+        creatures = numpy.loadtxt(filename[0], dtype=numpy.int8)
+    except ValueError as e:
+        text = 'Please select file <code>numpy.savetxt</code> format.'
+        QtWidgets.QMessageBox.critical(window, 'Invalid File', text)
+        return
+    except FileNotFoundError:
+        return
+
+    grid.wator = WaTor(creatures=creatures)
+    grid.update()
+
+
+def save_wator(window, grid):
+    ...
 
 
 def main():
@@ -144,14 +164,21 @@ def main():
     palette.itemSelectionChanged.connect(item_activated)
     palette.setCurrentRow(1)
 
-    action = window.findChild(QtWidgets.QAction, 'actionNew')
-    action.triggered.connect(lambda: new_dialog(window, grid))
+    action_new = window.findChild(QtWidgets.QAction, 'actionNew')
+    action_new.triggered.connect(lambda: new_dialog(window, grid))
 
-    about = window.findChild(QtWidgets.QAction, 'actionAbout')
-    about.triggered.connect(lambda: new_about(window))
+    action_about = window.findChild(QtWidgets.QAction, 'actionAbout')
+    action_about.triggered.connect(lambda: new_about(window))
 
-    next_chronon = window.findChild(QtWidgets.QAction, 'actionNextChronon')
-    next_chronon.triggered.connect(lambda: next_tick(grid))
+    action_next_chronon = window.findChild(QtWidgets.QAction,
+                                           'actionNextChronon')
+    action_next_chronon.triggered.connect(lambda: next_chronon(grid))
+
+    action_open = window.findChild(QtWidgets.QAction, 'actionOpen')
+    action_open.triggered.connect(lambda: open_wator(window, grid))
+
+    action_save = window.findChild(QtWidgets.QAction, 'actionSave')
+    action_save.triggered.connect(lambda: save_wator(window, grid))
 
     window.show()
 
