@@ -138,7 +138,10 @@ def open_wator(window, grid):
 def save_wator(window, grid):
     filename = QtWidgets.QFileDialog.getSaveFileName(window, 'Save File')[0]
     if filename != '':
-        numpy.savetxt(filename, grid.wator.creatures)
+        try:
+            numpy.savetxt(filename, grid.wator.creatures)
+        except OSError as e:
+            QtWidgets.QMessageBox.critical(window, 'File Not Saved', str(e))
 
 
 def params_dialog(window, grid):
