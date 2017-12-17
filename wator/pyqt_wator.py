@@ -91,8 +91,7 @@ def new_dialog(window, grid):
     rows = dialog.findChild(QtWidgets.QSpinBox, 'heightBox').value()
     cols = dialog.findChild(QtWidgets.QSpinBox, 'widthBox').value()
 
-    wator = WaTor(shape=(rows, cols), nfish=0, nsharks=0)
-    grid.wator = wator
+    grid.wator = WaTor(shape=(rows, cols), nfish=0, nsharks=0)
 
     size = logical_to_pixels(rows, cols)
     grid.setMinimumSize(*size)
@@ -132,6 +131,12 @@ def open_wator(window, grid):
         return
 
     grid.wator = WaTor(creatures=creatures)
+
+    size = logical_to_pixels(*creatures.shape)
+    grid.setMinimumSize(*size)
+    grid.setMaximumSize(*size)
+    grid.resize(*size)
+
     grid.update()
 
 
