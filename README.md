@@ -29,7 +29,7 @@ $ python -m wator
     - [ ] kvůli zjednodušení zvažujte pouze situaci, že všichni žraloci mají
           stejnou počáteční energii
     - [ ] "věk" zvířat se při vložení do matice nastaví náhodně
-- [ ] klikat na tlačítko *Next chronon*, které provede a vizualizuje jedno
+- [x] klikat na tlačítko *Next chronon*, které provede a vizualizuje jedno
       volání metody `.tick()`
 - [ ] měnit parametry simulace mezi klikáním na tlačítko z předchozího bodu
 - [x] nabídka *Help ‣ About* vyvolá okno s informacemi o aplikaci:

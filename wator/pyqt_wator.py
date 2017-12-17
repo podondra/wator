@@ -91,6 +91,11 @@ def new_dialog(window, grid):
     grid.update()
 
 
+def next_tick(wator, grid):
+    wator.tick()
+    grid.update()
+
+
 def new_about(window):
     text = ('<h3>Wa-Tor</h3>'
             'Wa-Tor population dynamics simulation.<p>'
@@ -145,6 +150,9 @@ def main():
 
     about = window.findChild(QtWidgets.QAction, 'actionAbout')
     about.triggered.connect(lambda: new_about(window))
+
+    next_chronon = window.findChild(QtWidgets.QAction, 'actionNextChronon')
+    next_chronon.triggered.connect(lambda: next_tick(wator, grid))
 
     window.show()
 

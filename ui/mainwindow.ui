@@ -59,6 +59,7 @@
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionQuit"/>
+    <addaction name="actionNextChronon"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -80,6 +81,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionNextChronon"/>
    <addaction name="actionQuit"/>
   </widget>
   <action name="actionQuit">
@@ -95,6 +97,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionNextChronon">
+   <property name="text">
+    <string> Next Chronon</string>
    </property>
   </action>
  </widget>
