@@ -111,9 +111,9 @@ def new_about(window):
 
 
 def open_wator(window, grid):
-    filename = QtWidgets.QFileDialog.getOpenFileName(window, 'Open File')
+    filename = QtWidgets.QFileDialog.getOpenFileName(window, 'Open File')[0]
     try:
-        creatures = numpy.loadtxt(filename[0], dtype=numpy.int8)
+        creatures = numpy.loadtxt(filename, dtype=numpy.int8)
     except ValueError as e:
         text = 'Please select file <code>numpy.savetxt</code> format.'
         QtWidgets.QMessageBox.critical(window, 'Invalid File', text)
@@ -126,7 +126,9 @@ def open_wator(window, grid):
 
 
 def save_wator(window, grid):
-    ...
+    filename = QtWidgets.QFileDialog.getSaveFileName(window, 'Save File')[0]
+    if filename != '':
+        numpy.savetxt(filename, grid.wator.creatures)
 
 
 def main():

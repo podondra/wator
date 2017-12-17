@@ -14,11 +14,11 @@ $ python -m wator
 
 - [x] vytvářet novou simulaci zadaných rozměrů (prázdnou, náhodně generovanou
       apod., jak chcete)
-- [ ] ukládat a načítat simulaci ve formě NumPy matic do/ze souborů dle volby
+- [x] ukládat a načítat simulaci ve formě NumPy matic do/ze souborů dle volby
       uživatele
-    - [ ] pokud se to nepovede, musí aplikace zobrazit chybové hlášení
+    - [x] pokud se to nepovede, musí aplikace zobrazit chybové hlášení
           v grafické podobě (tj. ne jen do konzole)
-    - [ ] formát souborů viz zadání
+    - [x] formát souborů viz zadání
 - [x] prohlížet simulaci v grafické podobě
     - [x] včetně obrázků ryb a žraloků
     - [x] pokud se simulace celá nevejde do okna, musí mít posuvníky
