@@ -12,7 +12,7 @@ $ python -m wator
 
 ## Qt Checklist
 
-- [ ] vytvářet novou simulaci zadaných rozměrů (prázdnou, náhodně generovanou
+- [x] vytvářet novou simulaci zadaných rozměrů (prázdnou, náhodně generovanou
       apod., jak chcete)
 - [ ] ukládat a načítat simulaci ve formě NumPy matic do/ze souborů dle volby
       uživatele

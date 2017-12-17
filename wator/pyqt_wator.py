@@ -1,5 +1,4 @@
 from PyQt5 import QtWidgets, uic, QtGui, QtCore, QtSvg
-import numpy
 from .wator import WaTor
 
 
@@ -18,11 +17,11 @@ def logical_to_pixels(row, column):
     return column * CELL_SIZE, row * CELL_SIZE
 
 
-class GridWidget(QtWidgets.QWidget):
-    def __init__(self, array):
+class WaTorWidget(QtWidgets.QWidget):
+    def __init__(self, wator):
         super().__init__()
-        self.array = array
-        size = logical_to_pixels(*array.shape)
+        self.wator = wator
+        size = logical_to_pixels(*wator.creatures.shape)
         self.setMinimumSize(*size)
         self.setMaximumSize(*size)
         self.resize(*size)
@@ -34,8 +33,8 @@ class GridWidget(QtWidgets.QWidget):
         row_min = max(row_min, 0)
         col_min = max(col_min, 0)
         row_max, col_max = pixels_to_logical(rect.right(), rect.bottom())
-        row_max = min(row_max + 1, self.array.shape[0])
-        col_max = min(col_max + 1, self.array.shape[1])
+        row_max = min(row_max + 1, self.wator.creatures.shape[0])
+        col_max = min(col_max + 1, self.wator.creatures.shape[1])
 
         painter = QtGui.QPainter(self)
 
@@ -49,20 +48,20 @@ class GridWidget(QtWidgets.QWidget):
 
                 SVG_WATER.render(painter, rect)
 
-                if self.array[row, column] > 0:
+                if self.wator.creatures[row, column] > 0:
                     SVG_FISH.render(painter, rect)
-                elif self.array[row, column] < 0:
+                elif self.wator.creatures[row, column] < 0:
                     SVG_SHARK.render(painter, rect)
 
     def mousePressEvent(self, event):
         row, column = pixels_to_logical(event.x(), event.y())
 
         if event.button() == QtCore.Qt.LeftButton and \
-                0 <= row < self.array.shape[0] and \
-                0 <= column < self.array.shape[1]:
-            self.array[row, column] = self.selected
+                0 <= row < self.wator.creatures.shape[0] and \
+                0 <= column < self.wator.creatures.shape[1]:
+            self.wator.creatures[row, column] = self.selected
         elif event.button() == QtCore.Qt.RightButton:
-            self.array[row, column] = 0
+            self.wator.creatures[row, column] = 0
 
         self.update(*logical_to_pixels(row, column), CELL_SIZE, CELL_SIZE)
 
@@ -78,10 +77,11 @@ def new_dialog(window, grid):
     if result == QtWidgets.QDialog.Rejected:
         return
 
-    cols = dialog.findChild(QtWidgets.QSpinBox, 'widthBox').value()
     rows = dialog.findChild(QtWidgets.QSpinBox, 'heightBox').value()
+    cols = dialog.findChild(QtWidgets.QSpinBox, 'widthBox').value()
 
-    grid.array = numpy.zeros((rows, cols), dtype=numpy.int8)
+    wator = WaTor(shape=(rows, cols), nfish=0, nsharks=0)
+    grid.wator = wator
 
     size = logical_to_pixels(rows, cols)
     grid.setMinimumSize(*size)
@@ -91,8 +91,8 @@ def new_dialog(window, grid):
     grid.update()
 
 
-def next_tick(wator, grid):
-    wator.tick()
+def next_tick(grid):
+    grid.wator.tick()
     grid.update()
 
 
@@ -118,11 +118,10 @@ def main():
     with open('ui/mainwindow.ui') as f:
         uic.loadUi(f, window)
 
-    wator = WaTor(shape=(10, 10), nfish=16, nsharks=4)
-
     scroll_area = window.findChild(QtWidgets.QScrollArea, 'scrollArea')
 
-    grid = GridWidget(wator.creatures)
+    wator = WaTor(shape=(10, 10), nfish=16, nsharks=4)
+    grid = WaTorWidget(wator)
     scroll_area.setWidget(grid)
 
     palette = window.findChild(QtWidgets.QListWidget, 'pallete')
@@ -152,7 +151,7 @@ def main():
     about.triggered.connect(lambda: new_about(window))
 
     next_chronon = window.findChild(QtWidgets.QAction, 'actionNextChronon')
-    next_chronon.triggered.connect(lambda: next_tick(wator, grid))
+    next_chronon.triggered.connect(lambda: next_tick(grid))
 
     window.show()
 
