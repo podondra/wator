@@ -33,7 +33,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QListWidget" name="pallete">
+     <widget class="QListWidget" name="palette">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
         <horstretch>0</horstretch>

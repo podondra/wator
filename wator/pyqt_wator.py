@@ -60,7 +60,17 @@ class WaTorWidget(QtWidgets.QWidget):
         if event.button() == QtCore.Qt.LeftButton and \
                 0 <= row < self.wator.creatures.shape[0] and \
                 0 <= column < self.wator.creatures.shape[1]:
-            self.wator.creatures[row, column] = self.selected
+            if self.selected == 1:
+                self.wator.creatures[row, column] = numpy.random.randint(
+                        1, self.wator.age_fish
+                        )
+            elif self.selected == -1:
+                self.wator.creatures[row, column] = numpy.random.randint(
+                        self.wator.age_shark, -1
+                        )
+                self.wator.energies[row, column] = self.wator.energy_initial
+            else:
+                self.wator.creatures[row, column] = 0
         elif event.button() == QtCore.Qt.RightButton:
             self.wator.creatures[row, column] = 0
 
@@ -146,7 +156,7 @@ def main():
     grid = WaTorWidget(wator)
     scroll_area.setWidget(grid)
 
-    palette = window.findChild(QtWidgets.QListWidget, 'pallete')
+    palette = window.findChild(QtWidgets.QListWidget, 'palette')
 
     def add_item(name, image, value):
         item = QtWidgets.QListWidgetItem(name)

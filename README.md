@@ -22,11 +22,11 @@ $ python -m wator
 - [x] prohlížet simulaci v grafické podobě
     - [x] včetně obrázků ryb a žraloků
     - [x] pokud se simulace celá nevejde do okna, musí mít posuvníky
-- [ ] klást do simulace zvířata (ryby, žraloky) a odebírat je
+- [x] klást do simulace zvířata (ryby, žraloky) a odebírat je
      (tyto změny se projeví v paměti na úrovni NumPy matice)
-    - [ ] kvůli zjednodušení zvažujte pouze situaci, že všichni žraloci mají
+    - [x] kvůli zjednodušení zvažujte pouze situaci, že všichni žraloci mají
           stejnou počáteční energii
-    - [ ] "věk" zvířat se při vložení do matice nastaví náhodně
+    - [x] "věk" zvířat se při vložení do matice nastaví náhodně
 - [x] klikat na tlačítko *Next chronon*, které provede a vizualizuje jedno
       volání metody `.tick()`
 - [ ] měnit parametry simulace mezi klikáním na tlačítko z předchozího bodu
