@@ -203,24 +203,18 @@ def main():
     palette.itemSelectionChanged.connect(item_activated)
     palette.setCurrentRow(1)
 
-    action_new = window.findChild(QtWidgets.QAction, 'actionNew')
-    action_new.triggered.connect(lambda: new_dialog(window, grid))
+    actions = [
+            ('actionNew', lambda: new_dialog(window, grid)),
+            ('actionAbout', lambda: about_dialog(window)),
+            ('actionNextChronon', lambda: next_chronon(grid)),
+            ('actionOpen', lambda: open_wator(window, grid)),
+            ('actionSave', lambda: save_wator(window, grid)),
+            ('actionParams', lambda: params_dialog(window, grid)),
+            ]
 
-    action_about = window.findChild(QtWidgets.QAction, 'actionAbout')
-    action_about.triggered.connect(lambda: about_dialog(window))
-
-    action_next_chronon = window.findChild(QtWidgets.QAction,
-                                           'actionNextChronon')
-    action_next_chronon.triggered.connect(lambda: next_chronon(grid))
-
-    action_open = window.findChild(QtWidgets.QAction, 'actionOpen')
-    action_open.triggered.connect(lambda: open_wator(window, grid))
-
-    action_save = window.findChild(QtWidgets.QAction, 'actionSave')
-    action_save.triggered.connect(lambda: save_wator(window, grid))
-
-    action_parameters = window.findChild(QtWidgets.QAction, 'actionParams')
-    action_parameters.triggered.connect(lambda: params_dialog(window, grid))
+    for object_name, function in actions:
+        action = window.findChild(QtWidgets.QAction, object_name)
+        action.triggered.connect(function)
 
     window.show()
 
