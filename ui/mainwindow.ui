@@ -58,6 +58,7 @@
      <string>Map</string>
     </property>
     <addaction name="actionNextChronon"/>
+    <addaction name="actionParams"/>
     <addaction name="separator"/>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
@@ -117,6 +118,11 @@
   <action name="actionSave">
    <property name="text">
     <string>Save As...</string>
+   </property>
+  </action>
+  <action name="actionParams">
+   <property name="text">
+    <string>Parameters...</string>
    </property>
   </action>
  </widget>

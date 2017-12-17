@@ -29,7 +29,7 @@ $ python -m wator
     - [x] "věk" zvířat se při vložení do matice nastaví náhodně
 - [x] klikat na tlačítko *Next chronon*, které provede a vizualizuje jedno
       volání metody `.tick()`
-- [ ] měnit parametry simulace mezi klikáním na tlačítko z předchozího bodu
+- [x] měnit parametry simulace mezi klikáním na tlačítko z předchozího bodu
 - [x] nabídka *Help ‣ About* vyvolá okno s informacemi o aplikaci:
     - [x] název
     - [x] stručný popis

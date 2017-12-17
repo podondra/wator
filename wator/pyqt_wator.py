@@ -107,7 +107,7 @@ def next_chronon(grid):
     grid.update()
 
 
-def new_about(window):
+def about_dialog(window):
     text = ('<h3>Wa-Tor</h3>'
             'Wa-Tor population dynamics simulation.<p>'
             '<p>Version: v0.3<br>'
@@ -139,6 +139,33 @@ def save_wator(window, grid):
     filename = QtWidgets.QFileDialog.getSaveFileName(window, 'Save File')[0]
     if filename != '':
         numpy.savetxt(filename, grid.wator.creatures)
+
+
+def params_dialog(window, grid):
+    dialog = QtWidgets.QDialog(window)
+
+    with open('ui/params.ui') as f:
+        uic.loadUi(f, dialog)
+
+    values = [grid.wator.age_fish, -grid.wator.age_shark,
+              grid.wator.energy_initial, grid.wator.energy_eat]
+    boxes = ['ageFishBox', 'ageSharkBox', 'energyInitialBox', 'energyEatBox']
+    for value, box in zip(values, boxes):
+        window.findChild(QtWidgets.QSpinBox, box).setValue(value)
+
+    result = dialog.exec()
+
+    if result == QtWidgets.QDialog.Rejected:
+        return
+
+    grid.wator.age_fish = dialog.findChild(QtWidgets.QSpinBox,
+                                           'ageFishBox').value()
+    grid.wator.age_shark = -dialog.findChild(QtWidgets.QSpinBox,
+                                             'ageSharkBox').value()
+    grid.wator.energy_initial = dialog.findChild(QtWidgets.QSpinBox,
+                                                 'energyInitialBox').value()
+    grid.wator.energy_eat = dialog.findChild(QtWidgets.QSpinBox,
+                                             'energyEatBox').value()
 
 
 def main():
@@ -180,7 +207,7 @@ def main():
     action_new.triggered.connect(lambda: new_dialog(window, grid))
 
     action_about = window.findChild(QtWidgets.QAction, 'actionAbout')
-    action_about.triggered.connect(lambda: new_about(window))
+    action_about.triggered.connect(lambda: about_dialog(window))
 
     action_next_chronon = window.findChild(QtWidgets.QAction,
                                            'actionNextChronon')
@@ -191,6 +218,9 @@ def main():
 
     action_save = window.findChild(QtWidgets.QAction, 'actionSave')
     action_save.triggered.connect(lambda: save_wator(window, grid))
+
+    action_parameters = window.findChild(QtWidgets.QAction, 'actionParams')
+    action_parameters.triggered.connect(lambda: params_dialog(window, grid))
 
     window.show()
 
