@@ -1,10 +1,12 @@
 from PyQt5 import QtWidgets, uic, QtGui, QtCore, QtSvg
 import numpy
+from .wator import WaTor
 
 
 CELL_SIZE = 32
-SVG_GRASS = QtSvg.QSvgRenderer('img/grass.svg')
-SVG_WALL = QtSvg.QSvgRenderer('img/wall.svg')
+SVG_WATER = QtSvg.QSvgRenderer('img/water.svg')
+SVG_FISH = QtSvg.QSvgRenderer('img/fish.svg')
+SVG_SHARK = QtSvg.QSvgRenderer('img/shark.svg')
 VALUE_ROLE = QtCore.Qt.UserRole
 
 
@@ -45,10 +47,12 @@ class GridWidget(QtWidgets.QWidget):
                 white = QtGui.QColor(255, 255, 255)
                 painter.fillRect(rect, QtGui.QBrush(white))
 
-                SVG_GRASS.render(painter, rect)
+                SVG_WATER.render(painter, rect)
 
-                if self.array[row, column] < 0:
-                    SVG_WALL.render(painter, rect)
+                if self.array[row, column] > 0:
+                    SVG_FISH.render(painter, rect)
+                elif self.array[row, column] < 0:
+                    SVG_SHARK.render(painter, rect)
 
     def mousePressEvent(self, event):
         row, column = pixels_to_logical(event.x(), event.y())
@@ -109,12 +113,11 @@ def main():
     with open('ui/mainwindow.ui') as f:
         uic.loadUi(f, window)
 
-    array = numpy.zeros((15, 20), dtype=numpy.int8)
-    array[:, 5] = -1    # some wall
+    wator = WaTor(shape=(10, 10), nfish=16, nsharks=4)
 
     scroll_area = window.findChild(QtWidgets.QScrollArea, 'scrollArea')
 
-    grid = GridWidget(array)
+    grid = GridWidget(wator.creatures)
     scroll_area.setWidget(grid)
 
     palette = window.findChild(QtWidgets.QListWidget, 'pallete')
@@ -126,8 +129,9 @@ def main():
         palette.addItem(item)
         item.setData(VALUE_ROLE, value)
 
-    add_item('grass', 'img/grass.svg', 0)
-    add_item('wall', 'img/wall.svg', -1)
+    add_item('water', 'img/water.svg', 0)
+    add_item('fish', 'img/fish.svg', 1)
+    add_item('shark', 'img/shark.svg', -1)
 
     def item_activated():
         for item in palette.selectedItems():
