@@ -22,7 +22,10 @@ class WaTorWidget(QtWidgets.QWidget):
     def __init__(self, wator):
         super().__init__()
         self.wator = wator
-        size = logical_to_pixels(*wator.creatures.shape)
+        self.resize_wator()
+
+    def resize_wator(self):
+        size = logical_to_pixels(*self.wator.creatures.shape)
         self.setMinimumSize(*size)
         self.setMaximumSize(*size)
         self.resize(*size)
@@ -93,11 +96,7 @@ def new_dialog(window, grid):
 
     grid.wator = WaTor(shape=(rows, cols), nfish=0, nsharks=0)
 
-    size = logical_to_pixels(rows, cols)
-    grid.setMinimumSize(*size)
-    grid.setMaximumSize(*size)
-    grid.resize(*size)
-
+    grid.resize_wator()
     grid.update()
 
 
@@ -132,11 +131,7 @@ def open_wator(window, grid):
 
     grid.wator = WaTor(creatures=creatures)
 
-    size = logical_to_pixels(*creatures.shape)
-    grid.setMinimumSize(*size)
-    grid.setMaximumSize(*size)
-    grid.resize(*size)
-
+    grid.resize_wator()
     grid.update()
 
 
