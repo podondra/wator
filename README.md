@@ -19,11 +19,9 @@ $ python -m wator
     - [ ] pokud se to nepovede, musí aplikace zobrazit chybové hlášení
           v grafické podobě (tj. ne jen do konzole)
     - [ ] formát souborů viz zadání
-- [ ] prohlížet simulaci v grafické podobě
-    - [ ] včetně obrázků ryb a žraloků
-    - [ ] pokud se simulace celá nevejde do okna, musí mít posuvníky
-    - [ ] zoom (např. <kbd>Ctrl</kbd> + kolečko myši) není nutný,
-          ale je příjemný, pro velké odzoomování nahraďte obrázky barvou
+- [x] prohlížet simulaci v grafické podobě
+    - [x] včetně obrázků ryb a žraloků
+    - [x] pokud se simulace celá nevejde do okna, musí mít posuvníky
 - [ ] klást do simulace zvířata (ryby, žraloky) a odebírat je
      (tyto změny se projeví v paměti na úrovni NumPy matice)
     - [ ] kvůli zjednodušení zvažujte pouze situaci, že všichni žraloci mají
