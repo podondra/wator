@@ -87,10 +87,24 @@ def new_dialog(window, grid):
     grid.update()
 
 
+def new_about(window):
+    text = ('<h3>Wa-Tor</h3>'
+            'Wa-Tor population dynamics simulation.<p>'
+            '<p>Version: v0.3<br>'
+            'Authors: Ondřej Podsztavek, Miro Hrončok<br>'
+            'Repository: <a href="https://github.com/podondra/wator">'
+            'https://github.com/podondra/wator</a><br>'
+            'Licence: GNU General Public License v3.0<br>'
+            'Graphics: <a href="https://opengameart.org/">'
+            'OpenGameArt.org</a></p>')
+    QtWidgets.QMessageBox.about(window, 'About Wa-Tor', text)
+
+
 def main():
     app = QtWidgets.QApplication([])
 
     window = QtWidgets.QMainWindow()
+    window.setWindowIcon(QtGui.QIcon('img/shark.svg'))
 
     with open('ui/mainwindow.ui') as f:
         uic.loadUi(f, window)
@@ -124,6 +138,9 @@ def main():
 
     action = window.findChild(QtWidgets.QAction, 'actionNew')
     action.triggered.connect(lambda: new_dialog(window, grid))
+
+    about = window.findChild(QtWidgets.QAction, 'actionAbout')
+    about.triggered.connect(lambda: new_about(window))
 
     window.show()
 

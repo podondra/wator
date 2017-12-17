@@ -32,13 +32,13 @@ $ python -m wator
 - [ ] klikat na tlačítko *Next chronon*, které provede a vizualizuje jedno
       volání metody `.tick()`
 - [ ] měnit parametry simulace mezi klikáním na tlačítko z předchozího bodu
-- [ ] nabídka *Help ‣ About* vyvolá okno s informacemi o aplikaci:
-    - [ ] název
-    - [ ] stručný popis
-    - [ ] autor/autoři (vy, případně i my, pokud používáte náš kód)
-    - [ ] odkaz na repozitář
-    - [ ] informace o licenci (pozor na licenci PyQt!)
-    - [ ] pokud používáte public domain grafiku z OpenGameArt.org,
+- [x] nabídka *Help ‣ About* vyvolá okno s informacemi o aplikaci:
+    - [x] název
+    - [x] stručný popis
+    - [x] autor/autoři (vy, případně i my, pokud používáte náš kód)
+    - [x] odkaz na repozitář
+    - [x] informace o licenci (pozor na licenci PyQt!)
+    - [x] pokud používáte public domain grafiku z OpenGameArt.org,
           nemáte právní povinnost zdroj zmínit, ale považujeme to za slušnost
 
 ## References
